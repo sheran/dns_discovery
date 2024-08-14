@@ -49,8 +49,14 @@ func main() {
 		log.Println("Error marshalling:", err)
 		return
 	}
+	filename := fmt.Sprintf("%s_ips.json", hostToScan)
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Println("Error creating file:", err)
+	}
+	defer file.Close()
+	file.WriteString(string(jres))
 	fmt.Println(string(jres))
-
 }
 
 func parseOutput(output string) string {
@@ -69,7 +75,7 @@ func runDNSScan(tld string, showLogs bool) (string, error) {
 		log.Fatal(err)
 	}
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
-		Image:     "dnsscan",
+		Image:     "sherangee/dnsscan:latest",
 		Tty:       true,
 		OpenStdin: true,
 		Env:       []string{fmt.Sprintf("TLD=%s", tld)},
