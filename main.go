@@ -50,7 +50,7 @@ func main() {
 		return
 	}
 	filename := fmt.Sprintf("%s_ips.json", hostToScan)
-	file, err := os.Open(filename)
+	file, err := os.Create(filename)
 	if err != nil {
 		log.Println("Error creating file:", err)
 	}
