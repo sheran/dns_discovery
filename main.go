@@ -13,6 +13,7 @@ import (
 	"syscall"
 
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/strslice"
 	"github.com/docker/docker/client"
 )
 
@@ -79,6 +80,7 @@ func runDNSScan(tld string, showLogs bool) (string, error) {
 		Tty:       true,
 		OpenStdin: true,
 		Env:       []string{fmt.Sprintf("TLD=%s", tld)},
+		Cmd:       strslice.StrSlice{"--wildcard"},
 	}, &container.HostConfig{
 		Binds:      []string{fmt.Sprintf("%s:/out", currentDir)},
 		AutoRemove: true,
